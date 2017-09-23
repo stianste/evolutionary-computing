@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Random;
 import org.vu.contest.ContestEvaluation;
@@ -21,6 +22,7 @@ public class Group16 implements ContestSubmission {
   public void setEvaluation(ContestEvaluation evaluation) {
     // Set evaluation problem used in the run
     evaluation_ = evaluation;
+    System.out.println("Running algorithm");
 
     // Get evaluation properties
     Properties props = evaluation.getProperties();
@@ -41,10 +43,14 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    // Run your algorithm here
+    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, 500);
 
     int evals = 0;
     // init population
+    double[][] initialPopulation = EA.initializePopulation();
+    System.out.println("Running algorithm");
+    System.out.flush();
+    Arrays.stream(initialPopulation).forEach(individual -> System.out.println(Arrays.toString(individual)));
     // calculate fitness
     while (evals < evaluations_limit_) {
       // Select parents

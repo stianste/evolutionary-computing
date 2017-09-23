@@ -96,7 +96,7 @@ public class JNIfgeneric {
    * Initializes the BBOB C backend.
    * Has to be called each time any of the
    * parameters (e.g. dimensions, functionID) changes; do not forget to
-   * call exitBBOB() before again calling initialize.
+   * call exitBBOB() before again calling initializePopulation.
    *
    * @return the target function value of the specified fitness function
    */
@@ -106,7 +106,7 @@ public class JNIfgeneric {
   //Native method declaration
 
   /**
-   * Closes down the BBOB C backend initiated by initialize.
+   * Closes down the BBOB C backend initiated by initializePopulation.
    *
    * @return the best true fitness value ever obtained
    */
@@ -149,9 +149,9 @@ public class JNIfgeneric {
   public native double getFbest();
 
   /**
-   * Returns the number of function since initialize() was called.
+   * Returns the number of function since initializePopulation() was called.
    *
-   * @return the number of function evaluations since initialize() was called.
+   * @return the number of function evaluations since initializePopulation() was called.
    */
   public native double getEvaluations();
 
