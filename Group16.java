@@ -43,7 +43,8 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, 500);
+    int populationSize = 10;
+    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, populationSize);
 
     int evals = 0;
     // init population
