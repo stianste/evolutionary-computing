@@ -1,10 +1,12 @@
+import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public abstract class EvolutionaryAlgorithm {
 
   private int populationSize;
-  private Random random;
+  protected Random random;
 
   public EvolutionaryAlgorithm(Random random, int populationSize) {
     this.random = random;
@@ -29,5 +31,9 @@ public abstract class EvolutionaryAlgorithm {
 
     return initialPopulation;
   }
+
+  public abstract double[][] selectParents(Map<double[], Double> fitnessTable);
+  public abstract double[] crossover(double[] mother, double[] father);
+  public abstract double[] mutate(double[] individual);
 
 }

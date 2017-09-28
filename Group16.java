@@ -1,6 +1,9 @@
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.IntStream;
 import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 
@@ -9,6 +12,8 @@ public class Group16 implements ContestSubmission {
   Random rnd_;
   ContestEvaluation evaluation_;
   private int evaluations_limit_;
+  private Map<double[], Double> parentsFitnessTable = new HashMap<double[], Double>();
+  private Map<double[], Double> childFitnessTable = new HashMap<double[], Double>();
 
   public Group16() {
     rnd_ = new Random();
@@ -43,25 +48,40 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    int populationSize = 10;
+    int populationSize = 500;
     EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, populationSize);
 
     int evals = 0;
     // init population
     double[][] initialPopulation = EA.initializePopulation();
-    System.out.println("Running algorithm");
-    System.out.flush();
-    Arrays.stream(initialPopulation).forEach(individual -> System.out.println(Arrays.toString(individual)));
     // calculate fitness
+    evaluatePopulation(initialPopulation, this.parentsFitnessTable);
+
+    // Arrays.stream(initialPopulation).forEach(individual -> System.out.println(Arrays.toString(individual)));
     while (evals < evaluations_limit_) {
-      // Select parents
+      double[][] parents = EA.selectParents(this.parentsFitnessTable);
       // Apply crossover / mutation operators
-      double child[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-      // Check fitness of unknown fuction
-      Double fitness = (double) evaluation_.evaluate(child);
+      double[] child = EA.crossover(parents[0], parents[1]);
+
+      double[] mutatedChild = EA.mutate(child);
+
+      Double fitness = (double) evaluation_.evaluate(mutatedChild);
       evals++;
+
+      this.childFitnessTable.put(mutatedChild, fitness);
       // Select survivors
     }
-
   }
+
+  private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable ) {
+    Arrays.stream(population).forEach(individual -> fitnessTable.put(individual, this.evaluation_.evaluate(individual)));
+  };
+
+  private void clearParentPopulation() {
+    this.parentsFitnessTable.clear();
+  };
+
+  private void clearChildPopulation() {
+    this.childFitnessTable.clear();
+  };
 }
