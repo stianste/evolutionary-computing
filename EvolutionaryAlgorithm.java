@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 public abstract class EvolutionaryAlgorithm {
 
   private int populationSize;
-  protected Random random;
+  protected static Random random;
 
   public EvolutionaryAlgorithm(Random random, int populationSize) {
     this.random = random;
@@ -15,10 +15,7 @@ public abstract class EvolutionaryAlgorithm {
 
   private static double[] generateRandomArrayOfDimension(int dimension, Random random) {
     double[] A = new double[dimension];
-    IntStream.range(0, dimension).forEach(i ->
-        A[i] =
-            Constants.minValue + (Constants.maxValue - Constants.minValue) * random.nextDouble());
-
+    IntStream.range(0, dimension).forEach(i -> A[i] = generateDoubleWithinRange(Constants.minValue, Constants.maxValue));
     return A;
   }
 
@@ -35,5 +32,9 @@ public abstract class EvolutionaryAlgorithm {
   public abstract double[][] selectParents(Map<double[], Double> fitnessTable);
   public abstract double[] crossover(double[] mother, double[] father);
   public abstract double[] mutate(double[] individual);
+
+  static double generateDoubleWithinRange(int minValue, int maxValue) {
+    return minValue + (maxValue - minValue) * random.nextDouble();
+  }
 
 }

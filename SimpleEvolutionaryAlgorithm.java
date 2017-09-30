@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.ArrayUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -17,9 +17,10 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
   @Override
   public double[][] selectParents(Map<double[], Double> fitnessTable){
     int fitnessWeight = 10;
+
     List<double[]> selectionArray = new ArrayList<double[]>();
     for(Map.Entry<double[], Double> candidate : fitnessTable.entrySet()) {
-      for(int i = 0; i < candidate.getValue().intValue() * fitnessWeight; i++){
+      for(int i = 0; i < candidate.getValue().intValue() * fitnessWeight + 1; i++){
         selectionArray.add(candidate.getKey());
       }
     }
@@ -40,6 +41,15 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[] mutate(double[] individual) {
-    return new double[0];
+    double[] mutatedIndividual = new double[individual.length];
+    IntStream.range(0, individual.length).forEach(i -> {
+      int random = this.random.nextInt(100);
+      if(random < (int) Constants.mutationRate * 100) {
+        mutatedIndividual[i] = this.generateDoubleWithinRange(Constants.minValue, Constants.maxValue);
+      } else {
+        mutatedIndividual[i] = individual[i];
+      }
+    });
+    return mutatedIndividual;
   }
 }

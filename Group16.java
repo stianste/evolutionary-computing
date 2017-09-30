@@ -9,7 +9,7 @@ import org.vu.contest.ContestSubmission;
 
 public class Group16 implements ContestSubmission {
 
-  Random rnd_;
+  static Random rnd_;
   ContestEvaluation evaluation_;
   private int evaluations_limit_;
   private Map<double[], Double> parentsFitnessTable = new HashMap<double[], Double>();
@@ -27,7 +27,6 @@ public class Group16 implements ContestSubmission {
   public void setEvaluation(ContestEvaluation evaluation) {
     // Set evaluation problem used in the run
     evaluation_ = evaluation;
-    System.out.println("Running algorithm");
 
     // Get evaluation properties
     Properties props = evaluation.getProperties();
@@ -58,15 +57,20 @@ public class Group16 implements ContestSubmission {
     evaluatePopulation(initialPopulation, this.parentsFitnessTable);
 
     // Arrays.stream(initialPopulation).forEach(individual -> System.out.println(Arrays.toString(individual)));
+
     while (evals < evaluations_limit_) {
       double[][] parents = EA.selectParents(this.parentsFitnessTable);
       // Apply crossover / mutation operators
       double[] child = EA.crossover(parents[0], parents[1]);
 
       double[] mutatedChild = EA.mutate(child);
-
+      System.out.println("Sending in following child:");
+      System.out.println(mutatedChild);
+      System.out.println(mutatedChild == null);
+      System.out.println(mutatedChild.length);
       Double fitness = (double) evaluation_.evaluate(mutatedChild);
       evals++;
+      System.out.println(evals);
 
       this.childFitnessTable.put(mutatedChild, fitness);
       // Select survivors
@@ -74,7 +78,7 @@ public class Group16 implements ContestSubmission {
   }
 
   private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable ) {
-    Arrays.stream(population).forEach(individual -> fitnessTable.put(individual, this.evaluation_.evaluate(individual)));
+    Arrays.stream(population).forEach(individual -> fitnessTable.put(individual, (double) this.evaluation_.evaluate(individual)));
   };
 
   private void clearParentPopulation() {
