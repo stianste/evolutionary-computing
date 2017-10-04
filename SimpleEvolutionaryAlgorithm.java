@@ -41,10 +41,11 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[] mutate(double[] individual) {
+    // Uniform mutation
     double[] mutatedIndividual = new double[individual.length];
     IntStream.range(0, individual.length).forEach(i -> {
       int random = this.random.nextInt(100);
-      if(random < (int) Constants.mutationRate * 100) {
+      if(random < Constants.mutationRate * 100) {
         mutatedIndividual[i] = this.generateDoubleWithinRange(Constants.minValue, Constants.maxValue);
       } else {
         mutatedIndividual[i] = individual[i];
