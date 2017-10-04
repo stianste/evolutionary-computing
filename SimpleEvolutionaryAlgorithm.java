@@ -33,24 +33,49 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[] crossover(double[] mother, double[] father) {
-    int k = this.random.nextInt(mother.length);
-    double[] firstPart = Arrays.copyOfRange(mother, 0, k);
-    double[] secondPart = Arrays.copyOfRange(father, k, father.length);
-    return DoubleStream.concat(Arrays.stream(firstPart), Arrays.stream(secondPart)).toArray();
+    return this.singleArithmeticRecombination(mother, father, 0.5);
   }
 
   @Override
   public double[] mutate(double[] individual) {
-    // Uniform mutation
+    return this.uniformMutation(individual);
+  }
+
+  public double[] uniformMutation(double[] individual) {
     double[] mutatedIndividual = new double[individual.length];
     IntStream.range(0, individual.length).forEach(i -> {
-      int random = this.random.nextInt(100);
-      if(random < Constants.mutationRate * 100) {
+      double random = this.random.nextDouble();
+      if(random < Constants.mutationRate) {
         mutatedIndividual[i] = this.generateDoubleWithinRange(Constants.minValue, Constants.maxValue);
       } else {
         mutatedIndividual[i] = individual[i];
       }
     });
     return mutatedIndividual;
+  }
+
+  private double[] singleArithmeticRecombination(double[] mother, double[] father, double alpha){
+    int k = random.nextInt(mother.length);
+
+    double[] child = new double[mother.length];
+
+    IntStream.range(0, mother.length).forEach(i -> {
+      if(k < i){
+        child[i] = mother[i];
+      } else {
+        child[i] = (1 - alpha) * mother[i] + alpha * father[i];
+      }
+    });
+
+    return child;
+  }
+
+  private double[] naiveCrossover(double[] mother, double[] father) {
+    // A crossover operator that makes more sense for integer representation, not these
+    // real valued vectors
+    int k = this.random.nextInt(mother.length);
+    double[] firstPart = Arrays.copyOfRange(mother, 0, k);
+    double[] secondPart = Arrays.copyOfRange(father, k, father.length);
+    return DoubleStream.concat(Arrays.stream(firstPart), Arrays.stream(secondPart)).toArray();
   }
 }
