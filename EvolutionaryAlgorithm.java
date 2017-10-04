@@ -34,7 +34,7 @@ public abstract class EvolutionaryAlgorithm {
 
   public abstract double[][] selectParents(Map<double[], Double> fitnessTable);
 
-  public abstract double[] crossover(double[] mother, double[] father);
+  public abstract double[] recombination(double[] mother, double[] father);
 
   public abstract double[] mutate(double[] individual);
 }

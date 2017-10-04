@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-import java.util.stream.IntStream;
 import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 
@@ -62,7 +61,7 @@ public class Group16 implements ContestSubmission {
       for (int i = 0; i < Constants.populationSize; i++) {
         double[][] parents = EA.selectParents(this.parentsFitnessTable);
 
-        double[] child = EA.crossover(parents[0], parents[1]);
+        double[] child = EA.recombination(parents[0], parents[1]);
         double[] mutatedChild = EA.mutate(child);
 
         Double fitness = (double) evaluation_.evaluate(mutatedChild);
@@ -74,11 +73,13 @@ public class Group16 implements ContestSubmission {
       // Make the current population of children the parent population of the next generation
       this.parentsFitnessTable = new HashMap<>(this.childFitnessTable);
       this.childFitnessTable.clear();
-      System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String.valueOf((double) evals / evaluations_limit_ * 100) + " % done");
+      System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String
+          .valueOf((double) evals / evaluations_limit_ * 100) + " % done");
     }
   }
 
-  private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable ) {
-    Arrays.stream(population).forEach(individual -> fitnessTable.put(individual, (double) this.evaluation_.evaluate(individual)));
+  private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable) {
+    Arrays.stream(population).forEach(
+        individual -> fitnessTable.put(individual, (double) this.evaluation_.evaluate(individual)));
   }
 }
