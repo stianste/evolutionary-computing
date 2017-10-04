@@ -12,8 +12,8 @@ public class Group16 implements ContestSubmission {
   static Random rnd_;
   ContestEvaluation evaluation_;
   private int evaluations_limit_;
-  private Map<double[], Double> parentsFitnessTable = new HashMap<double[], Double>();
-  private Map<double[], Double> childFitnessTable = new HashMap<double[], Double>();
+  private Map<double[], Double> parentsFitnessTable = new HashMap<>();
+  private Map<double[], Double> childFitnessTable = new HashMap<>();
 
   public Group16() {
     rnd_ = new Random();
@@ -47,7 +47,7 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, Constants.populationSize);
+    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(rnd_, Constants.populationSize);
 
     int evals = 0;
 
@@ -79,13 +79,5 @@ public class Group16 implements ContestSubmission {
 
   private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable ) {
     Arrays.stream(population).forEach(individual -> fitnessTable.put(individual, (double) this.evaluation_.evaluate(individual)));
-  };
-
-  private void clearParentPopulation() {
-    this.parentsFitnessTable.clear();
-  };
-
-  private void clearChildPopulation() {
-    this.childFitnessTable.clear();
-  };
+  }
 }

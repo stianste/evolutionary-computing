@@ -2,11 +2,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.function.Function;
 
 public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
@@ -18,7 +16,7 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
   public double[][] selectParents(Map<double[], Double> fitnessTable){
     int fitnessWeight = 10;
 
-    List<double[]> selectionArray = new ArrayList<double[]>();
+    List<double[]> selectionArray = new ArrayList<>();
     for(Map.Entry<double[], Double> candidate : fitnessTable.entrySet()) {
       for(int i = 0; i < candidate.getValue().intValue() * fitnessWeight + 1; i++){
         selectionArray.add(candidate.getKey());
@@ -41,12 +39,12 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
     return this.uniformMutation(individual);
   }
 
-  public double[] uniformMutation(double[] individual) {
+  private double[] uniformMutation(double[] individual) {
     double[] mutatedIndividual = new double[individual.length];
     IntStream.range(0, individual.length).forEach(i -> {
-      double random = this.random.nextDouble();
-      if(random < Constants.mutationRate) {
-        mutatedIndividual[i] = this.generateDoubleWithinRange(Constants.minValue, Constants.maxValue);
+      double chanceOfMutation = random.nextDouble();
+      if(chanceOfMutation < Constants.mutationRate) {
+        mutatedIndividual[i] = generateDoubleWithinRange(Constants.minValue, Constants.maxValue);
       } else {
         mutatedIndividual[i] = individual[i];
       }
@@ -73,7 +71,7 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
   private double[] naiveCrossover(double[] mother, double[] father) {
     // A crossover operator that makes more sense for integer representation, not these
     // real valued vectors
-    int k = this.random.nextInt(mother.length);
+    int k = random.nextInt(mother.length);
     double[] firstPart = Arrays.copyOfRange(mother, 0, k);
     double[] secondPart = Arrays.copyOfRange(father, k, father.length);
     return DoubleStream.concat(Arrays.stream(firstPart), Arrays.stream(secondPart)).toArray();

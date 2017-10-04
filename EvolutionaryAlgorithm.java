@@ -13,17 +13,16 @@ public abstract class EvolutionaryAlgorithm {
     this.populationSize = populationSize;
   }
 
-  public double[][] initializePopulation() {
+  double[][] initializePopulation() {
     double[][] initialPopulation = new double[this.populationSize][Constants.problemDimension];
 
     IntStream.range(0, populationSize).forEach(i ->
-        initialPopulation[i] = generateRandomArrayOfDimension(Constants.problemDimension,
-            this.random));
+        initialPopulation[i] = generateRandomArrayOfDimension(Constants.problemDimension));
 
     return initialPopulation;
   }
 
-  private static double[] generateRandomArrayOfDimension(int dimension, Random random) {
+  private static double[] generateRandomArrayOfDimension(int dimension) {
     double[] A = new double[dimension];
     IntStream.range(0, dimension).forEach(i -> A[i] = generateDoubleWithinRange(Constants.minValue, Constants.maxValue));
     return A;
