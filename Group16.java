@@ -68,7 +68,16 @@ public class Group16 implements ContestSubmission {
       System.out.println(mutatedChild);
       System.out.println(mutatedChild == null);
       System.out.println(mutatedChild.length);
-      Double fitness = (double) evaluation_.evaluate(mutatedChild);
+      Arrays.stream(mutatedChild).forEach(value -> System.out.println(value));
+      Double fitness = null;
+      try {
+        fitness = (double) evaluation_.evaluate(mutatedChild);
+      } catch (NullPointerException e) {
+        // According to other students this would indicate that we have reached the
+        // maximum number of evaluations
+        System.out.println(evals);
+        return;
+      }
       evals++;
       System.out.println(evals);
 

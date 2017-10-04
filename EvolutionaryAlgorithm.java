@@ -13,12 +13,6 @@ public abstract class EvolutionaryAlgorithm {
     this.populationSize = populationSize;
   }
 
-  private static double[] generateRandomArrayOfDimension(int dimension, Random random) {
-    double[] A = new double[dimension];
-    IntStream.range(0, dimension).forEach(i -> A[i] = generateDoubleWithinRange(Constants.minValue, Constants.maxValue));
-    return A;
-  }
-
   public double[][] initializePopulation() {
     double[][] initialPopulation = new double[this.populationSize][Constants.problemDimension];
 
@@ -29,6 +23,12 @@ public abstract class EvolutionaryAlgorithm {
     return initialPopulation;
   }
 
+  private static double[] generateRandomArrayOfDimension(int dimension, Random random) {
+    double[] A = new double[dimension];
+    IntStream.range(0, dimension).forEach(i -> A[i] = generateDoubleWithinRange(Constants.minValue, Constants.maxValue));
+    return A;
+  }
+
   public abstract double[][] selectParents(Map<double[], Double> fitnessTable);
   public abstract double[] crossover(double[] mother, double[] father);
   public abstract double[] mutate(double[] individual);
@@ -36,5 +36,4 @@ public abstract class EvolutionaryAlgorithm {
   static double generateDoubleWithinRange(int minValue, int maxValue) {
     return minValue + (maxValue - minValue) * random.nextDouble();
   }
-
 }
