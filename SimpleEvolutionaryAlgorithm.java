@@ -25,8 +25,8 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
       }
     }
 
-    double[] mother = selectionArray.get(this.random.nextInt(selectionArray.size()));
-    double[] father = selectionArray.get(this.random.nextInt(selectionArray.size()));
+    double[] mother = selectionArray.get(random.nextInt(selectionArray.size()));
+    double[] father = selectionArray.get(random.nextInt(selectionArray.size()));
     double[][] parents = {mother, father};
     return parents;
   }

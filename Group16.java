@@ -47,42 +47,33 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    int populationSize = 500;
-    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, populationSize);
+    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(this.rnd_, Constants.populationSize);
 
     int evals = 0;
-    // init population
-    double[][] initialPopulation = EA.initializePopulation();
-    // calculate fitness
-    evaluatePopulation(initialPopulation, this.parentsFitnessTable);
 
-    // Arrays.stream(initialPopulation).forEach(individual -> System.out.println(Arrays.toString(individual)));
+    double[][] initialPopulation = EA.initializePopulation();
+
+    // Give the members of the initial population a fitness score
+    evaluatePopulation(initialPopulation, this.parentsFitnessTable);
+    evals += Constants.populationSize;
 
     while (evals < evaluations_limit_) {
-      double[][] parents = EA.selectParents(this.parentsFitnessTable);
-      // Apply crossover / mutation operators
-      double[] child = EA.crossover(parents[0], parents[1]);
+      // Next generation
+      for (int i = 0; i < Constants.populationSize; i++) {
+        double[][] parents = EA.selectParents(this.parentsFitnessTable);
 
-      double[] mutatedChild = EA.mutate(child);
-      System.out.println("Sending in following child:");
-      System.out.println(mutatedChild);
-      System.out.println(mutatedChild == null);
-      System.out.println(mutatedChild.length);
-      Arrays.stream(mutatedChild).forEach(value -> System.out.println(value));
-      Double fitness = null;
-      try {
-        fitness = (double) evaluation_.evaluate(mutatedChild);
-      } catch (NullPointerException e) {
-        // According to other students this would indicate that we have reached the
-        // maximum number of evaluations
-        System.out.println(evals);
-        return;
+        double[] child = EA.crossover(parents[0], parents[1]);
+        double[] mutatedChild = EA.mutate(child);
+
+        Double fitness = (double) evaluation_.evaluate(mutatedChild);
+        evals++;
+
+        this.childFitnessTable.put(mutatedChild, fitness);
       }
-      evals++;
-      System.out.println(evals);
 
-      this.childFitnessTable.put(mutatedChild, fitness);
-      // Select survivors
+      // Make the current population of children the parent population of the next generation
+      this.parentsFitnessTable = new HashMap<>(this.childFitnessTable);
+      this.childFitnessTable.clear();
     }
   }
 
