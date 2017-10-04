@@ -74,6 +74,7 @@ public class Group16 implements ContestSubmission {
       // Make the current population of children the parent population of the next generation
       this.parentsFitnessTable = new HashMap<>(this.childFitnessTable);
       this.childFitnessTable.clear();
+      System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String.valueOf((double) evals / evaluations_limit_ * 100) + " % done");
     }
   }
 

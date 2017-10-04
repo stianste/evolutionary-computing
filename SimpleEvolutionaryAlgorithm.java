@@ -14,11 +14,11 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[][] selectParents(Map<double[], Double> fitnessTable){
-    int fitnessWeight = 10;
+    int fitnessWeight = 1000;
 
     List<double[]> selectionArray = new ArrayList<>();
     for(Map.Entry<double[], Double> candidate : fitnessTable.entrySet()) {
-      for(int i = 0; i < candidate.getValue().intValue() * fitnessWeight + 1; i++){
+      for(int i = 0; i < candidate.getValue() * fitnessWeight + 1; i++){
         selectionArray.add(candidate.getKey());
       }
     }
@@ -31,7 +31,7 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[] crossover(double[] mother, double[] father) {
-    return this.singleArithmeticRecombination(mother, father, 0.5);
+    return this.wholeArithmeticRecombination(mother, father, 0.5);
   }
 
   @Override
@@ -75,5 +75,17 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
     double[] firstPart = Arrays.copyOfRange(mother, 0, k);
     double[] secondPart = Arrays.copyOfRange(father, k, father.length);
     return DoubleStream.concat(Arrays.stream(firstPart), Arrays.stream(secondPart)).toArray();
+  }
+
+  private double[] wholeArithmeticRecombination(double[] mother, double[] father, double alpha){
+    int k = random.nextInt(mother.length);
+
+    double[] child = new double[mother.length];
+
+    IntStream.range(0, mother.length).forEach(i -> {
+      child[i] = (1 - alpha) * mother[i] + alpha * father[i];
+    });
+
+    return child;
   }
 }
