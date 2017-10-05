@@ -22,4 +22,37 @@ public class SelectionHelper {
     return parents;
   }
 
+  static double[][] deterministicTournamentWithReplacement(Map<double[], Double> fitnessTable,
+      Random random) {
+
+    double[] mother = singleTournament(fitnessTable, random);
+    double[] father = singleTournament(fitnessTable, random);
+    double[][] parents = {mother, father};
+    return parents;
+  }
+
+  static double[] singleTournament(Map<double[], Double> fitnessTable,
+      Random random) {
+
+    double[] mostWinningCandidate = new double[10];
+    int mostWins = 0;
+
+    Object[] individuals = fitnessTable.keySet().toArray();
+
+    for (Map.Entry<double[], Double> candidate : fitnessTable.entrySet()) {
+      int wins = 0;
+      for (int i = 0; i < Constants.tournamentSize; i++) {
+        double[] contender = (double[]) individuals[random.nextInt(individuals.length)];
+        if (candidate.getValue() > fitnessTable.get(contender)) {
+          wins += 1;
+        }
+      }
+      if (wins > mostWins) {
+        mostWinningCandidate = candidate.getKey();
+        mostWins = wins;
+      }
+    }
+    return mostWinningCandidate;
+  }
+
 }
