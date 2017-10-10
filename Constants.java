@@ -8,6 +8,6 @@ public class Constants {
   public static final int migrationEpochLength = 50;
   public static final int numberOfCandidatesToMigrate = 7;
   public static final int subpopulationSize = 50;
-  public static final int numberOfSubpopulations = 50;
+  public static final int numberOfSubpopulations = 10;
   public static final double mutationRate = 0.05;
 }
