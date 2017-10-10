@@ -1,8 +1,10 @@
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.IntStream;
 import org.vu.contest.ContestEvaluation;
 import org.vu.contest.ContestSubmission;
 
@@ -46,40 +48,27 @@ public class Group16 implements ContestSubmission {
   }
 
   public void run() {
-    EvolutionaryAlgorithm EA = new SimpleEvolutionaryAlgorithm(rnd_, Constants.populationSize);
-
     int evals = 0;
 
-    double[][] initialPopulation = EA.initializePopulation();
-
-    // Give the members of the initial population a fitness score
-    evaluatePopulation(initialPopulation, this.parentsFitnessTable);
-    evals += Constants.populationSize;
+    // Initialize islands
+    List<Island> islands = new ArrayList<>();
+    IntStream.range(0, Constants.numberOfSubpopulations).forEach(i ->
+        islands.add(
+            new Island(
+                Constants.populationSize,
+                new SimpleEvolutionaryAlgorithm(rnd_, Constants.populationSize),
+                evaluation_.evaluate)
+        ));
 
     while (evals < evaluations_limit_) {
-      // Next generation
-      for (int i = 0; i < Constants.populationSize; i++) {
-        double[][] parents = EA.selectParents(this.parentsFitnessTable);
-
-        double[] child = EA.recombination(parents[0], parents[1]);
-        double[] mutatedChild = EA.mutate(child);
-
-        Double fitness = (double) evaluation_.evaluate(mutatedChild);
-        evals++;
-
-        this.childFitnessTable.put(mutatedChild, fitness);
-      }
-
-      // Make the current population of children the parent population of the next generation
-      this.parentsFitnessTable = new HashMap<>(this.childFitnessTable);
-      this.childFitnessTable.clear();
-      System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String
-          .valueOf((double) evals / evaluations_limit_ * 100) + " % done");
+      islands.stream().forEach(island -> {
+        island.nextGeneration();
+      });
     }
+
+    evals += Constants.subpopulationSize * Constants.numberOfSubpopulations;
+    System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String
+        .valueOf((double) evals / evaluations_limit_ * 100) + " % done");
   }
 
-  private void evaluatePopulation(double[][] population, Map<double[], Double> fitnessTable) {
-    Arrays.stream(population).forEach(
-        individual -> fitnessTable.put(individual, (double) this.evaluation_.evaluate(individual)));
-  }
 }
