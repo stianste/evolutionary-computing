@@ -31,7 +31,7 @@ public class SelectionHelper {
     return parents;
   }
 
-  static double[] singleTournament(Map<double[], Double> fitnessTable,
+  public static double[] singleTournament(Map<double[], Double> fitnessTable,
       Random random) {
 
     double[] mostWinningCandidate = new double[10];

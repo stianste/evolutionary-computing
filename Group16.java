@@ -57,22 +57,45 @@ public class Group16 implements ContestSubmission {
             new Island(
                 Constants.subpopulationSize,
                 new SimpleEvolutionaryAlgorithm(rnd_, Constants.subpopulationSize),
+                rnd_,
                 this.evaluation_)
         ));
 
     evals += Constants.subpopulationSize * Constants.numberOfSubpopulations;
+
+    int generation = 1;
 
     while (evals < evaluations_limit_) {
       islands.stream().forEach(island -> {
         island.nextGeneration();
       });
 
-      // TODO: Are we actually using all the evaluations?
+      if (generation % Constants.generationsBetweenMigrations == 0) {
+        performMigration(islands);
+      }
+
+      generation += 1;
+
       evals += Constants.subpopulationSize * Constants.numberOfSubpopulations;
-      System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String
-          .valueOf((double) evals / evaluations_limit_ * 100) + " % done");
+
+      printStatistics(evals);
     }
 
+  }
+
+  private void performMigration(List<Island> islands) {
+    IntStream.range(0, islands.size()).forEach(i -> {
+      IntStream.range(0, islands.size()).forEach(j -> {
+        if (i != j) {
+          islands.get(i).receiveImmigrants(islands.get(j).giveAwayMigrants());
+        }
+      });
+    });
+  }
+
+  private void printStatistics(int evals) {
+    System.out.println(evals + " evals out of " + evaluations_limit_ + " – " + String
+        .valueOf((double) evals / evaluations_limit_ * 100) + " % done");
   }
 
 }
