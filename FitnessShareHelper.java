@@ -29,7 +29,7 @@ public class FitnessShareHelper {
   private static double sh(int d) {
     // The share function of two individuals
     if (d <= Constants.nicheDistance) {
-      return 1 - Math.pow(d / Constants.nicheDistance, Constants.fitnessSharingAlpha);
+      return 1 - (d / Constants.nicheDistance);
     }
     return 0.0;
   }

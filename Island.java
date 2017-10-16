@@ -54,7 +54,7 @@ public class Island {
   }
 
   public double[][] giveAwayMigrants() {
-    double[][] migrants = this.selectMigratorsByTournament(Constants.numberOfCandidatesToMigrate);
+    double[][] migrants = this.selectRandomMigrators(Constants.numberOfCandidatesToMigrate);
 
     Arrays.stream(migrants).forEach(migrant ->
         this.parentsFitnessTable.remove(
@@ -109,6 +109,4 @@ public class Island {
 
     return migrants;
   }
-
-
 }

@@ -9,7 +9,7 @@ public class SimpleEvolutionaryAlgorithm extends EvolutionaryAlgorithm {
 
   @Override
   public double[][] selectParents(Map<double[], Double> fitnessTable) {
-    return SelectionHelper.deterministicTournamentWithReplacement(fitnessTable, random, true);
+    return SelectionHelper.deterministicTournamentWithReplacement(fitnessTable, random, Constants.useFitnessSharing);
   }
 
   @Override

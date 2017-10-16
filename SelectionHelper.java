@@ -58,5 +58,4 @@ public class SelectionHelper {
     }
     return mostWinningCandidate;
   }
-
 }

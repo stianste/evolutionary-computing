@@ -78,7 +78,9 @@ public class Group16 implements ContestSubmission {
 
       evals += Constants.subpopulationSize * Constants.numberOfSubpopulations;
 
-      printStatistics(evals);
+      if (generation % Constants.generationsBetweenMigrations == 0) {
+        printStatistics(evals);
+      }
     }
 
   }
