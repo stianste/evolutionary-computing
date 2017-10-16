@@ -54,13 +54,13 @@ public class Island {
   }
 
   public double[][] giveAwayMigrants() {
-    double[][] migrators = this.selectMigratorsByTournament(Constants.numberOfCandidatesToMigrate);
+    double[][] migrants = this.selectMigratorsByTournament(Constants.numberOfCandidatesToMigrate);
 
-    Arrays.stream(migrators).forEach(migrator ->
+    Arrays.stream(migrants).forEach(migrant ->
         this.parentsFitnessTable.remove(
-            Arrays.copyOfRange(migrator, 0, migrator.length - 2)));
+            Arrays.copyOfRange(migrant, 0, migrant.length - 2)));
 
-    return migrators;
+    return migrants;
   }
 
   private void initializePopulation() {
@@ -76,37 +76,38 @@ public class Island {
   }
 
   private double[][] selectRandomMigrators(int numberOfCandidatesToMigrate) {
-    double[][] migrators = new double[numberOfCandidatesToMigrate][Constants.problemDimension + 1];
+    double[][] migrants = new double[numberOfCandidatesToMigrate][Constants.problemDimension + 1];
 
     Object[] keys = this.parentsFitnessTable.keySet().toArray();
     IntStream.range(0, numberOfCandidatesToMigrate).forEach(i -> {
       int randomIndex = this.random.nextInt(keys.length);
       double[] randomCandidate = (double[]) keys[randomIndex];
+
       IntStream.range(0, randomCandidate.length).forEach(
-          candidateIndex -> migrators[i][candidateIndex] = randomCandidate[candidateIndex]
+          candidateIndex -> migrants[i][candidateIndex] = randomCandidate[candidateIndex]
       );
-      // migrators[i] = (double[]) randomCandidate;
-      migrators[i][migrators[i].length - 1] = this.parentsFitnessTable.get(randomCandidate);
+
+      migrants[i][migrants[i].length - 1] = this.parentsFitnessTable.get(randomCandidate);
     });
 
-    return migrators;
+    return migrants;
   }
 
   private double[][] selectMigratorsByTournament(int numberOfCandidatesToMigrate) {
-    // Add one extra slot in each migrator for holding it's fitness value
-    double[][] migrators = new double[numberOfCandidatesToMigrate][Constants.problemDimension + 1];
+    // Add one extra slot in each migrant for holding it's fitness value
+    double[][] migrants = new double[numberOfCandidatesToMigrate][Constants.problemDimension + 1];
 
     IntStream.range(0, numberOfCandidatesToMigrate).forEach(i -> {
       double[] candidate = SelectionHelper.singleTournament(this.parentsFitnessTable, random);
 
       IntStream.range(0, candidate.length).forEach(
-          candidateIndex -> migrators[i][candidateIndex] = candidate[candidateIndex]
+          candidateIndex -> migrants[i][candidateIndex] = candidate[candidateIndex]
       );
 
-      migrators[i][migrators[i].length - 1] = this.parentsFitnessTable.get(candidate);
+      migrants[i][migrants[i].length - 1] = this.parentsFitnessTable.get(candidate);
     });
 
-    return migrators;
+    return migrants;
   }
 
 

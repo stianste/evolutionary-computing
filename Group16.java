@@ -85,7 +85,7 @@ public class Group16 implements ContestSubmission {
 
   private void performMigration(List<Island> islands) {
     IntStream.range(0, islands.size()).forEach(i -> {
-      IntStream.range(0, islands.size()).forEach(j -> {
+      IntStream.range(i, islands.size()).forEach(j -> {
         if (i != j) {
           islands.get(i).receiveImmigrants(islands.get(j).giveAwayMigrants());
         }

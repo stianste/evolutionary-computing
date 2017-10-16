@@ -35,7 +35,7 @@ public class SelectionHelper {
       Random random) {
 
     double[] mostWinningCandidate = new double[10];
-    int mostWins = 0;
+    int mostWins = -1;
 
     Object[] individuals = fitnessTable.keySet().toArray();
 
