@@ -23,7 +23,11 @@ public class SelectionHelper {
   }
 
   static double[][] deterministicTournamentWithReplacement(Map<double[], Double> fitnessTable,
-      Random random) {
+      Random random, boolean shareFitness) {
+
+    if (shareFitness) {
+      fitnessTable = FitnessShareHelper.sharedFitnessTable(fitnessTable);
+    }
 
     double[] mother = singleTournament(fitnessTable, random);
     double[] father = singleTournament(fitnessTable, random);
