@@ -7,7 +7,7 @@ public class Constants {
   public static final int populationSize = 1000;
 
   public static final int subpopulationSize = 100;
-  public static final int numberOfSubpopulations = 20;
+  public static final int numberOfSubpopulations = 25;
 
   public static final int generationsBetweenMigrations = 20;
   public static final int nicheDistance = 25;

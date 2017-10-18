@@ -15,7 +15,7 @@ public class FitnessShareHelper {
     return fitnessTable;
   }
 
-  private static int d(double[] i, double[] j){
+  public static int d(double[] i, double[] j){
     // Return the Euclidean distance between the two individuals i and j
     double sumOfSquares = 0;
     for(int index = 0; index < i.length; index++){
@@ -37,6 +37,7 @@ public class FitnessShareHelper {
   private static double calculateSharedFitness(double[] i, Map<double[], Double> fitnessTable){
     Object[] individuals = fitnessTable.keySet().toArray();
     double sharedFitnessSum = 0;
+
     for (int index = 0; index < individuals.length; index++){
       sharedFitnessSum += sh(d(i, (double[]) individuals[index]));
     }

@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.IntStream;
 import org.vu.contest.ContestEvaluation;
 
@@ -61,6 +62,10 @@ public class Island {
             Arrays.copyOfRange(migrant, 0, migrant.length - 2)));
 
     return migrants;
+  }
+
+  public Set<double[]> getPopulationMembers(){
+    return this.parentsFitnessTable.keySet();
   }
 
   private void initializePopulation() {
